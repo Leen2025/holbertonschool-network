@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
-# Script to change localhost and facebook.com IPs
+# Configure localhost and facebook.com IPs
 
-# Create a temporary file
-tmpfile=$(mktemp)
+# Backup hosts file
+cp /etc/hosts /etc/hosts.bak
 
-# Remove existing lines for localhost and facebook.com, then write new ones
-grep -vE 'localhost|facebook.com' /etc/hosts > "$tmpfile"
-echo "127.0.0.2 localhost" >> "$tmpfile"
-echo "8.8.8.8 facebook.com" >> "$tmpfile"
+# Replace or add localhost and facebook.com
+# Use a temporary file to avoid sed "Device or resource busy" error
+TMPFILE=$(mktemp)
 
-# Move the temporary file to /etc/hosts
-sudo mv "$tmpfile" /etc/hosts
+sed '/localhost/d;/facebook.com/d' /etc/hosts > "$TMPFILE"
+echo "127.0.0.2 localhost" >> "$TMPFILE"
+echo "8.8.8.8 facebook.com" >> "$TMPFILE"
+
+sudo cp "$TMPFILE" /etc/hosts
+rm "$TMPFILE"
