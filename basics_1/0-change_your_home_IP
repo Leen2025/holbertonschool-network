@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Script to change localhost and facebook.com IPs
 
-# Backup the original hosts file just in case
-cp /etc/hosts /etc/hosts.bak
+# Create a temporary file
+tmpfile=$(mktemp)
 
-# Remove any existing lines for localhost and facebook.com
-sed -i '/localhost/d' /etc/hosts
-sed -i '/facebook.com/d' /etc/hosts
+# Remove existing lines for localhost and facebook.com, then write new ones
+grep -vE 'localhost|facebook.com' /etc/hosts > "$tmpfile"
+echo "127.0.0.2 localhost" >> "$tmpfile"
+echo "8.8.8.8 facebook.com" >> "$tmpfile"
 
-# Add new IP mappings
-echo "127.0.0.2 localhost" >> /etc/hosts
-echo "8.8.8.8 facebook.com" >> /etc/hosts
+# Move the temporary file to /etc/hosts
+sudo mv "$tmpfile" /etc/hosts
