@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
-# Script to display listening ports
-netstat -lx -pt
+# TCP & UDP listening sockets
+sudo netstat -tulnp
+
+# UNIX domain sockets listening
+sudo netstat -xlnp
+
