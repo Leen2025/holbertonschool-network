@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-# Script to display listening ports
-netstat -lx -pt
+# Command to display TCP and UDP ports
+
+netstat -lp
